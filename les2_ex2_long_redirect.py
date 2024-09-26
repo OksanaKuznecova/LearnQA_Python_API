@@ -26,4 +26,4 @@ else:
         h += 1
     # the final URL and status code
     print(f"The final URL is {response.url}")
-    print(f"The final URL is {response.status_code}")
+    print(f"The final Status Code is {response.status_code}")
