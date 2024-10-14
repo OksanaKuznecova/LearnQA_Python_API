@@ -1,6 +1,6 @@
 from datetime import datetime
 import json.decoder
-
+from lib.my_requests import MyRequests
 from requests import Response
 
 
@@ -35,5 +35,22 @@ class BaseCase:
             "username": "learnqa",
             "firstName": "learnqa",
             "lastName": "learnqa",
-            "email": email
+            "email": email}
+
+    def login_user(self, email="vinkotov@example.com", password="1234"):
+        data = {
+            "email": email,
+            "password": password
         }
+        response1 = MyRequests.post("/user/login", data=data)
+        auth_sid = self.get_cookie(response1, "auth_sid")
+        token = self.get_header(response1, "x-csrf-token")
+        user_id = self.get_json_value(response1, "user_id")
+        return {
+            "auth_sid": auth_sid,
+            "token": token,
+            "user_id": user_id
+        }
+
+
+
