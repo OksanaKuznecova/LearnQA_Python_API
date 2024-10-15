@@ -1,5 +1,6 @@
 from datetime import datetime
 import json.decoder
+from lib.assertions import Assertions
 from lib.my_requests import MyRequests
 from requests import Response
 
@@ -52,5 +53,13 @@ class BaseCase:
             "user_id": user_id
         }
 
-
-
+    def register_new_random_user(self):
+        register_data = self.prepare_registration_data()
+        register_user_response = MyRequests.post("/user", data=register_data)
+        Assertions.assert_code_status(register_user_response, 200)
+        Assertions.assert_json_has_key(register_user_response, "id")
+        return {
+            "user_id": self.get_json_value(register_user_response, "id"),
+            "email": register_data['email'],
+            "password": register_data['password']
+        }
