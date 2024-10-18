@@ -17,7 +17,10 @@ class TestUserRegister(BaseCase):
         ("email")
     ]
 
-    @allure.description("This test successfully registers new user")
+    @allure.description("This test successfully registers new user by providing valid authorization data")
+    @allure.title("Test new user creation")
+    @allure.severity("blocker")
+    @allure.tag("Positive", "Smoke")
     def test_create_user_successfully(self):
         data = self.prepare_registration_data()
 
@@ -27,6 +30,9 @@ class TestUserRegister(BaseCase):
         Assertions.assert_json_has_key(response, "id")
 
     @allure.description("This test doesn't allow registering a new user with existing user's email")
+    @allure.title("Test registering already existing user")
+    @allure.severity("critical")
+    @allure.tag("Negative", "Smoke")
     def test_create_user_with_existing_email(self):
         email = "vinkotov@example.com"
         data = self.prepare_registration_data(email)
@@ -38,6 +44,9 @@ class TestUserRegister(BaseCase):
             f"Unexpected response content {response.content}"
 
     @allure.description("This test doesn't allow registering a new user with incorrect email")
+    @allure.title("Test registering user with invalid email format")
+    @allure.severity("critical")
+    @allure.tag("Negative")
     def test_create_user_with_incorrect_email(self):
         email = "some.random.user.com"
         data = self.prepare_registration_data(email)
@@ -47,7 +56,10 @@ class TestUserRegister(BaseCase):
         assert response.content.decode("utf-8") == f"Invalid email format", \
             f"Unexpected response content {response.content}"
 
-    @allure.description("This test checks registering a new user with missing params")
+    @allure.description("This test checks registering a new user with missing user data provided")
+    @allure.title("Test registering user with missing user data")
+    @allure.severity("critical")
+    @allure.tag("Negative", "Smoke")
     @pytest.mark.parametrize("user_field", exclude_user_fields)
     def test_create_user_with_missing_param(self, user_field):
         data = self.prepare_registration_data()
@@ -58,6 +70,9 @@ class TestUserRegister(BaseCase):
             f"Unexpected response content '{response.content}'"
 
     @allure.description("This test checks registering user with a short one symbol length username")
+    @allure.title("Test registering user with short username")
+    @allure.severity("normal")
+    @allure.tag("Negative")
     def test_create_user_with_short_username(self):
         data = self.prepare_registration_data()
         username = random.choice(string.ascii_letters)
@@ -68,6 +83,9 @@ class TestUserRegister(BaseCase):
             f"Unexpected response content '{response.content}'"
 
     @allure.description("This test checks registering user with a long username > 250 symbols")
+    @allure.title("Test registering user with long username")
+    @allure.severity("normal")
+    @allure.tag("Negative")
     def test_create_user_with_long_username(self):
         data = self.prepare_registration_data()
         username = ''.join(random.choice(string.ascii_letters) for x in range(251))

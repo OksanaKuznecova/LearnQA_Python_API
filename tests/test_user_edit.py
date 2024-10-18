@@ -9,6 +9,9 @@ import string
 @allure.epic("User edit cases")
 class TestUserEdit(BaseCase):
     @allure.description("This test successfully updates just created user")
+    @allure.title("Test editing just created user")
+    @allure.severity("blocker")
+    @allure.tag("Positive", "Smoke")
     def test_edit_just_created_user(self):
         # REGISTER
         register_user = self.register_new_random_user()
@@ -45,6 +48,9 @@ class TestUserEdit(BaseCase):
         )
 
     @allure.description("This test updates just created user without authentication")
+    @allure.title("Test editing user without authentication data")
+    @allure.severity("critical")
+    @allure.tag("Negative", "Security")
     def test_edit_just_created_user_not_auth(self):
         # REGISTER
         register_user = self.register_new_random_user()
@@ -65,6 +71,9 @@ class TestUserEdit(BaseCase):
             f"Unexpected response content '{edit_user_response.content}'")
 
     @allure.description("This test updates just created user with other user's authentication data")
+    @allure.title("Test editing user with other user's authentication data")
+    @allure.severity("critical")
+    @allure.tag("Negative", "Security")
     def test_edit_just_created_user_with_another_user_auth(self):
         # REGISTER FIRST USER
         register_first_user = self.register_new_random_user()
@@ -97,6 +106,9 @@ class TestUserEdit(BaseCase):
             f"Unexpected response content '{edit_user_response.content}'")
 
     @allure.description("This test updates just created user with email in a wrong format")
+    @allure.title("Test editing user with email in invalid format")
+    @allure.severity("critical")
+    @allure.tag("Negative")
     def test_edit_just_created_user_wrong_email_format(self):
         # REGISTER
         register_user = self.register_new_random_user()
@@ -126,6 +138,9 @@ class TestUserEdit(BaseCase):
             f"Unexpected response content '{edit_user_response.content}'")
 
     @allure.description("This test updates just created user with first name with one symbol length")
+    @allure.title("Test editing user with short first name")
+    @allure.severity("normal")
+    @allure.tag("Negative")
     def test_edit_just_created_user_short_first_name(self):
         # REGISTER
         register_user = self.register_new_random_user()

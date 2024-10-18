@@ -7,6 +7,9 @@ import allure
 @allure.epic("User delete cases")
 class TestUserDelete(BaseCase):
     @allure.description("This test tries to delete user not allowed for deletion")
+    @allure.title("Test deleting user not allowed for deletion")
+    @allure.severity("critical")
+    @allure.tag("Negative", "Security")
     def test_user_delete_not_allowed(self):
         # LOGIN
         auth_user_data = self.login_user()
@@ -29,6 +32,9 @@ class TestUserDelete(BaseCase):
             f"Unexpected response content '{delete_user_response.content}'")
 
     @allure.description("This test successfully deletes just created user")
+    @allure.title("Test deleting user with correct authorization data")
+    @allure.severity("blocker")
+    @allure.tag("Positive", "Smoke")
     def test_user_delete_successfully(self):
         # REGISTER
         register_user = self.register_new_random_user()
@@ -66,6 +72,9 @@ class TestUserDelete(BaseCase):
             f"Unexpected response content {get_user_response.content}"
 
     @allure.description("This test deletes just created user with other user's authentication data")
+    @allure.title("Test deleting user with other user's authorization data")
+    @allure.severity("critical")
+    @allure.tag("Negative", "Security")
     def test_user_delete_auth_as_another_user(self):
         # REGISTER FIRST USER
         register_first_user = self.register_new_random_user()
